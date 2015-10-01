@@ -1,3 +1,7 @@
+#sudo pip install pyping
+import pyping
+import sys
+
 class device(object):
     def __init__(self, name, mac = '', ip = '', desc = '', img = ''):
         self._name = name
@@ -73,3 +77,38 @@ class device(object):
             return False
         self._features.remove(feature)
         return True
+
+    def is_online(self, params):
+        try:
+            r = pyping.Ping(self.ip)
+            r.do()
+            if r.receive_count == 1:
+                isonline = True
+            else:
+                isonline = False
+        except:
+            print(sys.exc_info())
+            isonline = False
+
+        return {'result': True, 'isonline': isonline}
+
+    def wait_online(self, params):
+        return {'result': True, 'isonline': True}
+
+    def execute_feature(self, feature, cmd, params):
+        if feature == 'tv':
+            import tv_feature
+            tv = tv_feature.tv_feature(self)
+            tv.execute(cmd, params)
+        return {'result': True, 'feature': feature, 'cmd':cmd, 'params':params}
+
+    def execute(self, cmd, params):
+        cmd_part = cmd.split('.')
+        if len(cmd_part) == 1:
+            if cmd == 'online':
+                return self.is_online(params)
+            elif cmd == 'waitonline':
+                return self.wait_online(params)
+        else:
+            return self.execute_feature(cmd_part[0], cmd_part[1], params)
+        return {'result': True}
