@@ -1,11 +1,13 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, request, send_from_directory, redirect, url_for
 import json
-from device_store import device_store
+import MAX
 
 app = Flask(__name__, static_url_path='')
-store = device_store()
+store = MAX.devices
+scripts = MAX.scripts
 
+# Devices Section ====================================================
 @app.route('/MAX/api/v1.0/devices/', methods=['GET'])
 def get_devices():
     devices = []
@@ -62,9 +64,38 @@ def execute_cmd(device, cmd):
     param_json = request.get_json()
 
     #Execute cmd
-    return jsonify(store.devices[device].execute(cmd,param_json))
+    return jsonify(store.devices[device].execute(cmd, param_json))
 
+@app.route('/MAX/api/v1.0/devices/<string:device>/<string:feature>/<int:version>/<string:cmd>/', methods=['POST'])
+def execute_feature_cmd(device, feature, version, cmd):
+    if device not in store.devices:
+        abort(404)
 
+    param_json = request.get_json()
+
+    #Execute cmd
+    return jsonify(store.devices[device].execute_feature(feature, version, cmd, param_json))
+
+# Scripts Section ====================================================
+@app.route('/MAX/api/v1.0/scripts/', methods=['GET'])
+def get_scripts():
+    scripts_json = []
+    for key, value in scripts.scripts.iteritems():
+        scripts_json.append(value.json)
+
+    return jsonify({"scripts": scripts_json})
+
+@app.route('/MAX/api/v1.0/scripts/<string:script>/<int:version>/', methods=['POST'])
+def execute_script(script, version):
+    #if script not in scripts.scripts:
+    #    abort(404)
+
+    param_json = request.get_json()
+
+    #Execute script
+    return jsonify(scripts.execute_script(script, version, param_json))
+
+# Static WEB section ============================================
 @app.route('/html/<path:path>')
 def send_js(path):
     return send_from_directory('../../frontend/web-reactjs', path)

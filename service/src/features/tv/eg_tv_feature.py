@@ -1,6 +1,6 @@
 from eg_networksender import Send
 
-class tv_feature(object):
+class eg_tv_feature(object):
 
     def __init__(self, device):
         self._device = device

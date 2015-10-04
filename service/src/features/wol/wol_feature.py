@@ -21,7 +21,7 @@ class wol_feature(object):
 
     def execute(self, cmd, params):
         if cmd == 'wake':
-            return wake(params)
+            return self.wake(params)
 
     def wake(self, params):
         #wol.send_magic_packet('F8:0F:41:2B:84:94')

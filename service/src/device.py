@@ -1,6 +1,7 @@
 #sudo pip install pyping
 import pyping
 import sys
+import time
 
 class device(object):
     def __init__(self, name, mac = '', ip = '', desc = '', img = ''):
@@ -66,19 +67,19 @@ class device(object):
         return obj
 
     def add_feature(self, feature):
-        if feature.name in self._features:
+        if (feature.name.lower(), feature.version) in self._features:
             return False
 
-        self._features[feature.name] = feature
+        self._features[(feature.name.lower(), feature.version)] = feature
         return True
 
-    def del_feature(self, feature):
-        if feature not in self._features:
+    def del_feature(self, feature, version):
+        if (feature,version) not in self._features:
             return False
-        self._features.remove(feature)
+        self._features.remove((feature,version))
         return True
 
-    def is_online(self, params):
+    def is_online(self, params=None):
         try:
             r = pyping.Ping(self.ip)
             r.do()
@@ -92,23 +93,27 @@ class device(object):
 
         return {'result': True, 'isonline': isonline}
 
-    def wait_online(self, params):
-        return {'result': True, 'isonline': True}
+    def wait_online(self, params=None):
+        wait_time = 0.01
+        wait_retry = 100
+        if 'wait_time' in params: wait_time = params['wait_time']
+        if 'wait_retry' in params: wait_retry = params['wait_retry']
 
-    def execute_feature(self, feature, cmd, params):
-        if feature == 'tv':
-            import tv_feature
-            tv = tv_feature.tv_feature(self)
-            tv.execute(cmd, params)
-        return {'result': True, 'feature': feature, 'cmd':cmd, 'params':params}
+        for i in range(0,10000):
+            if self.is_online(params)['isonline']:
+                print(self.is_online(params))
+                return {'result': True, 'isonline': True, 'wait_time': wait_time, 'wait_retry':wait_retry}
+            time.sleep(0.01)
+        return {'result': True, 'isonline': False, 'wait_time': wait_time, 'wait_retry':wait_retry}
 
-    def execute(self, cmd, params):
-        cmd_part = cmd.split('.')
-        if len(cmd_part) == 1:
-            if cmd == 'online':
-                return self.is_online(params)
-            elif cmd == 'waitonline':
-                return self.wait_online(params)
-        else:
-            return self.execute_feature(cmd_part[0], cmd_part[1], params)
-        return {'result': True}
+    def execute_feature(self, feature, version, cmd, params=None):
+        if (feature,version) in self._features:
+            return self._features[(feature,version)].execute(cmd, params)
+        return {'result': False, 'feature': feature, 'version': version, 'cmd':cmd, 'params':params}
+
+    def execute(self, cmd, params=None):
+        if cmd == 'online':
+            return self.is_online(params)
+        elif cmd == 'waitonline':
+            return self.wait_online(params)
+        return {'result': False}

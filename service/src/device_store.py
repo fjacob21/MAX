@@ -1,9 +1,18 @@
 from device import device
+import json
 
 class device_store(object):
 
-    def __init__(self):
+    def __init__(self, features):
         self._devices = {}
+        self._features = features
+
+    def load_devices(self, file='../db/devices.json'):
+        with open(file) as data:
+            devices=json.load(data)
+
+        for device in devices['devices']:
+            self.add_device(device)
 
     def add_device(self, device_json):
         if device_json['name'] in self._devices:
@@ -27,6 +36,12 @@ class device_store(object):
         if 'mac' in device_json: deviceobj.mac = device_json['mac']
         if 'desc' in device_json: deviceobj.description = device_json['desc']
         if 'img' in device_json: deviceobj.image = device_json['img']
+        if 'features' in device_json:
+            for feature_json in device_json['features']:
+                feature_class = self._features.get_feature_class(feature_json['name'], int(feature_json['version']))
+                if feature_class is not None:
+                    feature = feature_class(deviceobj)
+                    deviceobj.add_feature(feature)
 
         return True
 

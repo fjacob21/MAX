@@ -1,0 +1,14 @@
+{
+  "devices":[
+            {
+              "name":"Salon",
+              "ip":"HTPCFJ",
+              "mac":"F8:0F:41:2B:84:94",
+              "desc":"Living room HTPC controlling the TV system",
+              "features":[
+                {"name": "tv", "version":1},
+                {"name": "wol", "version":1}
+              ]
+            }
+         ]
+}
