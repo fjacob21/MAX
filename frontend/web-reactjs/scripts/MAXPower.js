@@ -1,4 +1,19 @@
 var store = devicesStore();
+var scripts = scriptsStore();
+
+var HomeScreen = React.createClass({
+  onExecute: function(){
+    scripts.execute('openhouse', '1')
+  },
+  render: function() {
+    return (
+      <div className="homeScreen" >
+        <h3 className="inline">Open house</h3>
+        <button type="button" className="btn btn-default inline glyphicon glyphicon-plus" onClick={this.onExecute}/>
+      </div>
+    );
+  }
+});
 
 var DeviceBar = React.createClass({
   onAddDevice: function(){
@@ -184,7 +199,7 @@ var MenuBar = React.createClass({
    render: function() {
      var test = <DeviceBar />
      if(this.state.current == 0)
-      test = <div>Home</div>
+      test = <HomeScreen />
      else if (this.state.current == 1)
       test = <DeviceBox />
      else if (this.state.current == 2)
