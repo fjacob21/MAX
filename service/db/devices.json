@@ -10,6 +10,24 @@
                 {"name": "bev", "version":1},
                 {"name": "wol", "version":1}
               ]
+            },
+            {
+              "name":"WeMo Insight",
+              "ip":"WeMo Insight",
+              "mac":"",
+              "desc":"Bedroom desk light",
+              "features":[
+                {"name": "light", "version":1}
+              ]
+            },
+            {
+              "name":"WeMo Switch",
+              "ip":"WeMo Switch",
+              "mac":"",
+              "desc":"Living room entry light",
+              "features":[
+                {"name": "light", "version":1}
+              ]
             }
          ]
 }
