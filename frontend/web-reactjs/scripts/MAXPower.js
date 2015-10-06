@@ -2,14 +2,17 @@ var store = devicesStore();
 var scripts = scriptsStore();
 
 var HomeScreen = React.createClass({
-  onExecute: function(){
+  openHouse: function(){
     scripts.execute('openhouse', '1')
+  },
+  closeHouse: function(){
+    scripts.execute('closehouse', '1')
   },
   render: function() {
     return (
       <div className="homeScreen" >
-        <h3 className="inline">Open house</h3>
-        <button type="button" className="btn btn-default inline glyphicon glyphicon-plus" onClick={this.onExecute}/>
+        <button type="button" className="big-bt btn btn-default inline " onClick={this.openHouse}>Open house</button>
+        <button type="button" className="btn btn-default inline big-bt" onClick={this.closeHouse}>Close house</button>
       </div>
     );
   }

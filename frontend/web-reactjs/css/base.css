@@ -124,3 +124,9 @@ ul {
 .device-label{
   width: 50px;
 }
+
+.big-bt{
+  width: 100%;
+  height: 400px;
+  font-size: 100px;
+}

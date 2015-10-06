@@ -28,4 +28,8 @@ class openhouse_script(object):
 
         if not salon.execute_feature('tv', 1, 'open')['result']:
             return {'result': False}
+
+        if not salon.execute_feature('bev', 1, 'enter')['result']:
+            return {'result': False}
+
         return {'result': True}
