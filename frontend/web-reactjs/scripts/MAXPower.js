@@ -8,11 +8,21 @@ var HomeScreen = React.createClass({
   closeHouse: function(){
     scripts.execute('closehouse', '1')
   },
+  openLight: function(){
+    store.execute_feature('WeMo Insight', 'light', '1', 'on')
+    store.execute_feature('WeMo Switch', 'light', '1', 'on')
+  },
+  closeLight: function(){
+    store.execute_feature('WeMo Insight', 'light', '1', 'off')
+    store.execute_feature('WeMo Switch', 'light', '1', 'off')
+  },
   render: function() {
     return (
       <div className="homeScreen" >
         <button type="button" className="big-bt btn btn-default inline " onClick={this.openHouse}>Open house</button>
         <button type="button" className="btn btn-default inline big-bt" onClick={this.closeHouse}>Close house</button>
+        <button type="button" className="btn btn-default inline big-bt" onClick={this.openLight}>Open lights</button>
+        <button type="button" className="btn btn-default inline big-bt" onClick={this.closeLight}>Close lights</button>
       </div>
     );
   }

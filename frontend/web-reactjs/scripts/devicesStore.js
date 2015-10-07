@@ -12,7 +12,21 @@ function devicesStore(){
     build_request_url: function(request){
       return "/MAX/api/v1.0/" + request + "/";
     },
-
+    execute_feature: function(device, feature, cmd, version){
+      $.ajax({
+        url: this.build_request_url('devices/' + device + '/' + feature + '/' + cmd + '/' + version),
+        dataType: 'json',
+        type: 'POST',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({}),
+        success: function(data) {
+          //this.devices = data.devices;
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error("Error on execute ", status, err.toString());
+        }.bind(this)
+      });
+    },
     addDevice: function(device){
       $.ajax({
         url: this.build_request_url("devices"),
