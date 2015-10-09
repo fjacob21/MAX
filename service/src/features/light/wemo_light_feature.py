@@ -1,18 +1,12 @@
-#pip install ouimeaux
-
-from ouimeaux.environment import Environment
+from wemo_env import wemo
 
 class wemo_light_feature(object):
 
     def __init__(self, device):
         self._device = device
-        self._wemo_env = Environment(with_discovery=False, with_subscribers=False)
-        self._wemo_env.start()
-        self._wemo_device = self._wemo_env.get(self._device.name)
-
-    #def __del__(self):
-    #    print('delete wemo')
-    #    del(self._wemo_env)
+        #self._wemo_env = Environment(with_discovery=False, with_subscribers=False)
+        #self._wemo_env.start()
+        self._wemo_device = wemo.get_device(self._device.name)
 
     @property
     def name(self):
