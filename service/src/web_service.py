@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, abort, request, send_from_directory, redirect, url_for
 import json
+import thread
+import gevent
 import MAX
+#from wemo_env import wemo
 
 store = MAX.devices
 scripts = MAX.scripts
@@ -14,6 +17,7 @@ def get_devices():
     for key, value in store.devices.iteritems():
         devices.append(value.json)
 
+    #wemo._env.discover(10)
     return jsonify({"devices": devices})
 
 @app.route('/MAX/api/v1.0/devices/<string:device>/', methods=['GET'])
@@ -95,6 +99,14 @@ def execute_script(script, version):
     #Execute script
     return jsonify(scripts.execute_script(script, version, param_json))
 
+# Event Section ====================================================
+@app.route('/MAX/api/v1.0/events/', methods=['POST'])
+def trigger_event(event):
+    param_json = request.get_json()
+    #Send event to scheduler
+
+    return jsonify({"result": True})
+
 # Static WEB section ============================================
 @app.route('/html/<path:path>')
 def send_js(path):
@@ -102,7 +114,17 @@ def send_js(path):
 
 @app.route('/')
 def root():
+    #wemo.connect()
     return redirect('/html/index.html')
 
+def run():
+    print('Run Flask in Thread')
+    app.run(debug=False,host='0.0.0.0', port=5000, threaded=True)
+
 def start():
-    app.run(debug=False,host='0.0.0.0', port=5000)
+    from gevent.wsgi import WSGIServer
+    http_server = WSGIServer(('', 5000), app)
+    print('WebService ON')
+    http_server.serve_forever()
+    #gevent.spawn(run)
+    #thread.start_new_thread( run, () )

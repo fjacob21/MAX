@@ -28,6 +28,15 @@
               "features":[
                 {"name": "light", "version":1}
               ]
+            },
+            {
+              "name":"WeMo Motion",
+              "ip":"WeMo Motion",
+              "mac":"",
+              "desc":"Living room entry motion sensor",
+              "features":[
+                {"name": "motion", "version":1}
+              ]
             }
          ]
 }
