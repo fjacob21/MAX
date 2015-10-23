@@ -2,6 +2,7 @@ from flask import Flask, jsonify, abort, request, send_from_directory, redirect,
 import json
 import thread
 import gevent
+from device import device
 import MAX
 #from wemo_env import wemo
 
@@ -104,18 +105,15 @@ def execute_script(script, version):
 def trigger_event():
     print('Trigger event!!!!')
     param_json = request.get_json()
-    print(param_json)
     #Send event to scheduler
     if 'event' not in param_json:
         abort(404)
-    device = None
+
+    dev = device('')
     if 'device' in param_json and param_json['device'] in MAX.devices.devices:
-        device = MAX.devices.devices[param_json['device']]
-    print('Trigger event after!!!!')
-    try:
-        MAX.events.event(param_json['event'], device, param_json)
-    except:
-        print(sys.exc_info()[0])
+        dev = MAX.devices.devices[param_json['device']]
+
+    MAX.events.event(param_json['event'], dev, param_json)
     return jsonify({"result": True})
 
 # Static WEB section ============================================
