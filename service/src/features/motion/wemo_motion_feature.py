@@ -29,10 +29,9 @@ class wemo_motion_feature(object):
         return {'result': True, 'state': self._wemo_device.get_state()}
 
     def motion(self, state):
-        if self._current_state != state:
-            print('Fire event {st}!!!!!!!'.format(st=state))
-            if state == 1:
-                MAX.events.send_event('motionon', {})
-            else:
-                MAX.events.send_event('motionoff', {})
+        #if self._current_state != state:
+        if state == 1:
+            MAX.events.event('motion_on', self._device, {})
+        else:
+            MAX.events.event('motion_off', self._device, {})
         self._current_state = state

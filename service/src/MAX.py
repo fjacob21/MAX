@@ -3,6 +3,7 @@ from device_store import device_store
 from feature_store import feature_store
 from script_store import script_store
 from basic_event_scheduler import basic_event_scheduler
+from state_scheduler import state_event_scheduler
 import imp
 import os
 import sys
@@ -16,4 +17,4 @@ devices = device_store(features)
 devices.load_devices()
 scripts = script_store(devices)
 scripts.load_scripts()
-events = basic_event_scheduler()
+events = state_event_scheduler()

@@ -4,8 +4,6 @@ class wemo_light_feature(object):
 
     def __init__(self, device):
         self._device = device
-        #self._wemo_env = Environment(with_discovery=False, with_subscribers=False)
-        #self._wemo_env.start()
         self._wemo_device = wemo.get_device(self._device.name)
 
     @property

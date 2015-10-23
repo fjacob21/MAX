@@ -9,9 +9,6 @@ class wemo_env(object):
         self._watcheux = {}
         self._env = Environment()
         try:
-            #statechange.connect(self.update_state,
-            #                unique=False,
-            #                dispatch_uid=id(self))
             self._env.start()
             self._env.discover(3)
         except:
@@ -35,7 +32,6 @@ class wemo_env(object):
     def update_state(self, sender, **kwargs):
         if sender.name in self._watcheux:
             for watcheu in self._watcheux[sender.name]:
-                print('Calling watcheu')
                 watcheu(kwargs.get('state'))
 
         #print "{} state is {state}".format(
