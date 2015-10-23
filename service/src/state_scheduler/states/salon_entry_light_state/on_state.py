@@ -9,7 +9,7 @@ class on_state(object):
     def event(self, event, source, params):
         if source.name == 'WeMo Motion':
             dt = (time.time() - self._lasttime) / 60
-            if event == 'motion_off' and dt > 2:
+            if event == 'motion_off' and dt > 15:
                 self._machine.set_state(self._machine._off_state)
             if event == 'motion_on' and self._machine.isLightNeeded():
                 self._lasttime = time.time()

@@ -23,14 +23,20 @@ class salon_entry_light_state(object):
 
     def isMorning(self):
         now = time.localtime()
-        return now.tm_hour >= 6 and now.tm_hour <= 7
+        isMorning = now.tm_hour >= 6 and now.tm_hour <= 8
+        print("Is it morning? {0}".format(isMorning))
+        return isMorning
 
     def isEvening(self):
         now = time.localtime()
-        return now.tm_hour >= 18 and (now.tm_hour <= 21 and now.tm_min <= 55)
+        isEvening = now.tm_hour >= 18 and (now.tm_hour <= 21 and now.tm_min <= 55)
+        print("Is it evening? {0}".format(isEvening))
+        return isEvening
 
     def isLightNeeded(self):
-        return self.isMorning() or self.isEvening()
+        isLightNeeded = self.isMorning() or self.isEvening()
+        print("Is light needed? {0}".format(isLightNeeded))
+        return isLightNeeded
 
     def set_state(self, state):
         self._current_state = state
