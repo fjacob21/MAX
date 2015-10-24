@@ -24,7 +24,7 @@ class salon_entry_light_state(object):
 
     def isMorning(self):
         now = datetime.datetime.now().time()
-        isMorning = (datetime.time(0) <= now <= datetime.time(2))
+        isMorning = (datetime.time(6) <= now <= datetime.time(8))
         print("Is it morning? {0}".format(isMorning))
         return isMorning
 
