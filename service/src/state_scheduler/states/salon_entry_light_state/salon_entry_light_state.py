@@ -1,5 +1,6 @@
 import MAX
 import time
+import datetime
 from .off_state import off_state
 from .on_state import on_state
 from .prio_off_state import prio_off_state
@@ -22,14 +23,14 @@ class salon_entry_light_state(object):
         return "State machine that control the salon entry light"
 
     def isMorning(self):
-        now = time.localtime()
-        isMorning = now.tm_hour >= 6 and now.tm_hour <= 8
+        now = datetime.datetime.now().time()
+        isMorning = (datetime.time(0) <= now <= datetime.time(2))
         print("Is it morning? {0}".format(isMorning))
         return isMorning
 
     def isEvening(self):
-        now = time.localtime()
-        isEvening = now.tm_hour >= 18 and (now.tm_hour <= 21 and now.tm_min <= 55)
+        now = datetime.datetime.now().time()
+        isEvening = (datetime.time(18) <= now <= datetime.time(21, 30))
         print("Is it evening? {0}".format(isEvening))
         return isEvening
 
