@@ -5,7 +5,7 @@ function scriptsStore(){
 
     ctr: function(){
       this.refreshData();
-      setInterval(this.refreshData.bind(this), 2000);
+      //setInterval(this.refreshData.bind(this), 2000);
     },
 
     build_request_url: function(request){
