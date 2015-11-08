@@ -191,68 +191,88 @@ var DeviceBox = React.createClass({
     }
 });
 
-var MenuBar = React.createClass({
-  getInitialState: function() {
-    return {current: 0};
-   },
+ var TVControl = React.createClass({
+         render: function() {
+                 return (
+                         <div className="tVControl content">
+                         TVControl
+                         </div>
+                 );
+         }
+  });
 
-   setHome: function() {
-     this.setState({current: 0});
-   },
-   setDevices: function() {
-     this.setState({current: 1});
-   },
-   setScripts: function() {
-     this.setState({current: 2});
-   },
-   setContacts: function() {
-     this.setState({current: 3});
-   },
+  var LightControl = React.createClass({
+          render: function() {
+                  return (
+                          <div className="lightControl content">
+                         LightControl
+                          </div>
+                  );
+          }
+   });
 
-   render: function() {
-     var test = <DeviceBar />
-     if(this.state.current == 0)
-      test = <HomeScreen />
-     else if (this.state.current == 1)
-      test = <DeviceBox />
-     else if (this.state.current == 2)
-         test = <div>Scripts</div>
-     else if (this.state.current == 3)
-         test = <div>Contacts</div>
-     return (
-       <div>
-       <div className="navbar navbar-inverse navbar-fixed-top" role="navigation">
-           <div className="container">
-               <div className="navbar-header">
-                   <button type="button" className="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                       <span className="sr-only">Toggle navigation</span>
-                       <span className="icon-bar"></span>
-                       <span className="icon-bar"></span>
-                       <span className="icon-bar"></span>
-                       <span className="icon-bar"></span>
-                   </button>
-                   <table><tr><th>
-                   </th><th><a className="navbar-brand" href="#">MAX Power</a>
-                   </th></tr></table>
-               </div>
-               <div className="navbar-collapse collapse">
-                   <ul className="nav navbar-nav">
-                       <li className={this.state.current==0?'active':''} id="nav-home"><a href="#" onClick={this.setHome}>Home</a></li>
-                       <li className={this.state.current==1?'active':''} id="nav-devices"><a href="#devices" onClick={this.setDevices}>Devices</a></li>
-                       <li className={this.state.current==2?'active':''} id="nav-scripts"><a href="#scripts" onClick={this.setScripts}>Scripts</a></li>
-                       <li className={this.state.current==3?'active':''} id="nav-contact"><a href="#contact" onClick={this.setHome}>Contact</a></li>
-                   </ul>
-               </div>
-           </div>
-       </div>
-         {test}
-       </div>
-
-     );
-   }
- });
+ var App = React.createClass({
+         getInitialState: function() {
+                 return {current: <TVControl />,idx:1,side:false,touch_start: null,touch_end: null};
+         },
+         setMenu: function(menuidx){
+           var state = this.state;
+           state.idx=menuidx
+           if(menuidx == 1)
+                 state.current = <TVControl />;
+           else if (menuidx == 2)
+                   state.current = <LightControl />;
+           this.setState(state);
+         },
+         onTouchStart: function(e){
+                 var state = this.state;
+                 state.touch_start=e.touches[0]
+                 this.setState(state);
+         },
+         onTouchMove: function(e){
+                 var state = this.state;
+                 state.touch_end=e.touches[0]
+                 this.setState(state);
+         },
+         touchend: function(e){
+                if(this.state.touch_start != null && this.state.touch_end != null) {
+                        var state = this.state;
+                        dx = this.state.touch_end.screenX - this.state.touch_start.screenX
+                        if(dx < -50)
+                                state.side = true
+                        if(dx > 50)
+                                state.side = false
+                        state.touch_start = null;
+                        state.touch_end = null;
+                        this.setState(state);
+                }
+         },
+         setSideMenu: function(){
+           var state = this.state;
+           state.side=!state.side;
+           this.setState(state);
+         },
+         render: function() {
+                 var t = this.state.current;
+                 var side = "side-menu";
+                 if(this.state.side)
+                         side += " side-menu-visible";
+                 return (
+                         <div className="app" onTouchMove={this.onTouchMove} onTouchEnd={this.touchend} onTouchStart={this.onTouchStart}>
+                                 <div className="menu-bar">
+                                         <a className='side-menu-bt' onClick={this.setSideMenu} href="#">==</a>
+                                 </div>
+                                 {t}
+                                 <div className={side} onClick={this.setSideMenu}>
+                                         <a className={this.state.idx==1?'menu-item active':'menu-item '} onClick={this.setMenu.bind(this, 1)} href="#menu1">TV</a>
+                                         <a className={this.state.idx==2?'menu-item active':'menu-item '} onClick={this.setMenu.bind(this,2)} href="#menu2">Lights</a>
+                                 </div>
+                         </div>
+                 );
+         }
+  });
 
 React.render(
-  <MenuBar />,
+  <App />,
   document.getElementById('content')
 );

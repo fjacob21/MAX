@@ -3,8 +3,8 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.7;
+  padding: 0;
   margin: 0;
-  padding: 30px;
 }
 
 a {
@@ -61,72 +61,85 @@ ul {
   padding-left: 30px;
 }
 
-/* =============================================================================
-  An example of how stylize the tabs
-============================================================================= */
-
-.tabs {
-  margin-top: 0px;
+.content {
+        background: #f4f7ff;
+        height:100vh;
+        transition: transform 0.2s ease, visibility 0.001s linear 0.2s;
 }
 
-.tabs-navigation {
-  padding: 0 50px;
+.side-menu-bt {
+        float:right;
+        display: block;
+        padding: 0 30px;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 0;
+        color: #A9A9A9;
+        cursor: pointer;
+        transition: width 2s, height 2s, transform 2s;
+        text-decoration: none;
 }
 
-.tabs-navigation {
-  padding: 0 20px;
-  max-height: 50px;
-  border-bottom: 1px solid #DDD;
+.app {
+        display:table;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color:#000;
+        top: 0;
+        left: 0;
 }
 
-.tabs-menu {
-  display: table;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.side-menu {
+        padding: 70px 30px;
+        box-shadow: none;
+        background: #34495E;
+        z-index: 83;
+        transition: transform 0.2s ease, visibility 0.001s linear 0.2s;
+        transform: translate3D(270px, 0, 0);
+        width: 270px;
+        height: calc(100% + 60px);
+        position: fixed;
+        right:0;
+        top: 0;
+        display: block;
+        overflow: auto;
+        visibility: hidden;
+        box-sizing: border-box;
+        color: #ffffff;
 }
 
-.tabs-menu-item {
-  float: left;
+.side-menu-visible {
+        visibility: visible;
+        transform: translate3D(0, 0, 0);
+        transition: transform 0.2s ease, visibility 0.001s ease;
 }
 
-.tabs-menu-item a {
-  display: block;
-  padding: 0 40px;
-  height: 50px;
-  line-height: 50px;
-  border-bottom: 0;
-  color: #A9A9A9;
+.menu-bar {
+        border: 1px solid #DDD;
+        display: table-row;
 }
 
-.tabs-menu-item:not(.is-active) a:hover {
-  color: #3498db;
+.menu-item{
+        display: block;
+        float: left;
+        padding: 0 10px;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 0;
+        color: #A9A9A9;
+        cursor: pointer;
 }
 
-.tabs-menu-item.is-active a {
-  background: #fff;
-  border: 1px solid #DDD;
-  border-top: 2px solid #3498db;
-  border-bottom: 0;
-  color: #333;
+.menu-item:hover {
+        background-color: #f8f8f8;
 }
 
-.inline {
-  display: inline-block;
-  margin: 10px 10px;
-  vertical-align: top;
-}
-
-.bar {
-  border: 1px solid #DDD;
-}
-
-.device-label{
-  width: 50px;
-}
-
-.big-bt{
-  width: 100%;
-  height: 400px;
-  font-size: 100px;
+.menu-item.active{
+        background: #fff;
+        border: 1px solid #DDD;
+        border-top: 2px solid #3498db;
+        border-bottom: 0;
+        color: #333;
 }
