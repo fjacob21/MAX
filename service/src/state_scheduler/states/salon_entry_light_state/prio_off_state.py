@@ -19,4 +19,4 @@ class prio_off_state(object):
     def enter(self):
         self._lasttime = time.time()
         print('Close salon light in priority')
-        MAX.devices.devices['WeMo Switch'].execute_feature('light', 1, 'off', {})
+        MAX.devices.devices['Salonlightdoor'].execute_feature('light', 1, 'off', {})

@@ -13,4 +13,4 @@ class prio_on_state(object):
     def enter(self):
         self._lasttime = time.time()
         print('Open bedroom light in priority')
-        MAX.devices.devices['WeMo Insight'].execute_feature('light', 1, 'on', {})
+        MAX.devices.devices['Bedlightdesk'].execute_feature('light', 1, 'on', {})

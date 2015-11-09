@@ -4,7 +4,7 @@ class wemo_light_feature(object):
 
     def __init__(self, device):
         self._device = device
-        self._wemo_device = wemo.get_device(self._device.name)
+        self._wemo_device = wemo.get_device(self._device.ip)
 
     @property
     def name(self):

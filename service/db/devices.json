@@ -12,7 +12,7 @@
               ]
             },
             {
-              "name":"WeMo Insight",
+              "name":"Bedlightdesk",
               "ip":"WeMo Insight",
               "mac":"",
               "desc":"Bedroom desk light",
@@ -21,10 +21,19 @@
               ]
             },
             {
-              "name":"WeMo Switch",
+              "name":"Salonlightdoor",
               "ip":"WeMo Switch",
               "mac":"",
               "desc":"Living room entry light",
+              "features":[
+                {"name": "light", "version":1}
+              ]
+            },
+            {
+              "name":"Salonlightcorner",
+              "ip":"Saloncorner",
+              "mac":"",
+              "desc":"Living room corner light",
               "features":[
                 {"name": "light", "version":1}
               ]

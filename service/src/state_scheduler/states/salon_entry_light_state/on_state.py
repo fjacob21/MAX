@@ -19,4 +19,4 @@ class on_state(object):
     def enter(self):
         self._lasttime = time.time()
         print('Open salon light')
-        MAX.devices.devices['WeMo Switch'].execute_feature('light', 1, 'on', {})
+        MAX.devices.devices['Salonlightdoor'].execute_feature('light', 1, 'on', {})

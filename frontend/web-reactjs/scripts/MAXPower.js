@@ -1,5 +1,6 @@
 var store = devicesStore();
 var scripts = scriptsStore();
+var eventGenerator = eventGenerator();
 
 var HomeScreen = React.createClass({
   openHouse: function(){
@@ -192,20 +193,38 @@ var DeviceBox = React.createClass({
 });
 
  var TVControl = React.createClass({
+         wakeup: function() {
+                 scripts.execute('openhouse', '1');
+         },
+         toggle: function() {
+
+         },
          render: function() {
                  return (
                          <div className="tVControl content">
-                         TVControl
+                                 <a className="menu-item" onClick={this.wakeup} href="#wakeup">Wakeup</a>
+                                 <a className="menu-item" onClick={this.toggle} href="#toggle">Toggle</a>
                          </div>
                  );
          }
   });
 
   var LightControl = React.createClass({
+          frontdoor: function() {
+                  eventGenerator.sendEvent('salon_entry_bt');
+          },
+          saloncorner: function() {
+
+          },
+          beddesk: function() {
+                  eventGenerator.sendEvent('bedroom_desk_bt');
+          },
           render: function() {
                   return (
                           <div className="lightControl content">
-                         LightControl
+                                  <a className="menu-item" onClick={this.frontdoor} href="#frontdoor">Front door</a>
+                                  <a className="menu-item" onClick={this.saloncorner} href="#saloncorner">Salon corner</a>
+                                  <a className="menu-item" onClick={this.beddesk} href="#saloncorner">Bedroom desk</a>
                           </div>
                   );
           }
