@@ -196,14 +196,14 @@ var DeviceBox = React.createClass({
          wakeup: function() {
                  scripts.execute('openhouse', '1');
          },
-         toggle: function() {
-
+         close: function() {
+                 scripts.execute('closehouse', '1')
          },
          render: function() {
                  return (
                          <div className="tVControl content">
-                                 <a className="menu-item" onClick={this.wakeup} href="#wakeup">Wakeup</a>
-                                 <a className="menu-item" onClick={this.toggle} href="#toggle">Toggle</a>
+                                 <a className="content-item" onClick={this.wakeup} href="#wakeup">Wakeup</a>
+                                 <a className="content-item" onClick={this.close} href="#close">Close</a>
                          </div>
                  );
          }
@@ -213,8 +213,11 @@ var DeviceBox = React.createClass({
           frontdoor: function() {
                   eventGenerator.sendEvent('salon_entry_bt');
           },
+          frontdoorReset: function() {
+                  eventGenerator.sendEvent('salon_entry_reset_bt');
+          },
           saloncorner: function() {
-
+                  eventGenerator.sendEvent('salon_corner_bt');
           },
           beddesk: function() {
                   eventGenerator.sendEvent('bedroom_desk_bt');
@@ -222,9 +225,10 @@ var DeviceBox = React.createClass({
           render: function() {
                   return (
                           <div className="lightControl content">
-                                  <a className="menu-item" onClick={this.frontdoor} href="#frontdoor">Front door</a>
-                                  <a className="menu-item" onClick={this.saloncorner} href="#saloncorner">Salon corner</a>
-                                  <a className="menu-item" onClick={this.beddesk} href="#saloncorner">Bedroom desk</a>
+                                  <a className="content-item" onClick={this.frontdoor} href="#frontdoor">Front door</a>
+                                  <a className="content-item" onClick={this.frontdoorReset} href="#frontdoorReset">Front door reset</a>
+                                  <a className="content-item" onClick={this.saloncorner} href="#saloncorner">Salon corner</a>
+                                  <a className="content-item" onClick={this.beddesk} href="#saloncorner">Bedroom desk</a>
                           </div>
                   );
           }
@@ -279,7 +283,7 @@ var DeviceBox = React.createClass({
                  return (
                          <div className="app" onTouchMove={this.onTouchMove} onTouchEnd={this.touchend} onTouchStart={this.onTouchStart}>
                                  <div className="menu-bar">
-                                         <a className='side-menu-bt' onClick={this.setSideMenu} href="#">==</a>
+                                         <a className='side-menu-bt glyphicon glyphicon-asterisk' onClick={this.setSideMenu} href="#"></a>
                                  </div>
                                  {t}
                                  <div className={side} onClick={this.setSideMenu}>

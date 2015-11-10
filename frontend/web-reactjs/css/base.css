@@ -104,6 +104,55 @@ ul {
         transition: transform 0.2s ease, visibility 0.001s ease;
 }
 
+.content-item{
+        display: block;
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 0;
+        color: #787474;
+        cursor: pointer;
+        border: 1px solid #DDD;
+        text-decoration: none;
+}
+
+/*@font-face{
+        font-family:'Glyphicons Halflings';
+        src:url(../fonts/glyphicons-halflings-regular.eot);
+
+
+}*/
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'),
+       url('../fonts/glyphicons-halflings-regular.woff') format('woff'),
+       url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+       url('../fonts/glyphicons-halflings-regular.svg#@{icon-font-svg-id}') format('svg');
+}
+
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-asterisk:before               {  content: "\e137"; }
+
+.content-item:hover {
+        background-color: #f8f8f8;
+}
+
+.content-item:active {
+        background-color: #dd2424;
+}
+
 .menu-bar {
         border: 1px solid #DDD;
         display: table-row;
@@ -113,15 +162,11 @@ ul {
 
 .menu-item{
         display: block;
-        float: left;
-        padding: 0;
-        width: 100%;
         height: 50px;
         line-height: 50px;
         border-bottom: 0;
         color: #A9A9A9;
         cursor: pointer;
-        border: 1px solid #DDD;
         text-decoration: none;
 }
 
