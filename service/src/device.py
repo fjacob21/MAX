@@ -64,6 +64,14 @@ class device(object):
         obj['ip'] = self._ip
         obj['desc'] = self._desc
         obj['img'] = self._img
+        obj['features'] = []
+        for feature in self.features:
+            fobj = {}
+            fobj['name'] = feature.name
+            fobj['version'] = feature.version
+            fobj['description'] = feature.description
+            fobj['functions'] = feature.functions
+            obj['features'].append(fobj)
         return obj
 
     def add_feature(self, feature):

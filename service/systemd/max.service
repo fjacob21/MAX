@@ -1,0 +1,12 @@
+[Unit]
+Description=MAX home automation server
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+WorkingDirectory=/home/root/MAX/service/src
+Environment="PATH=/home/root/MAX/service/src"
+ExecStart=/usr/bin/python /home/root/MAX/service/src/main.py
+
+[Install]
+WantedBy=multi-user.target

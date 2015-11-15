@@ -1,198 +1,11 @@
 var store = devicesStore();
 var scripts = scriptsStore();
 var eventGenerator = eventGenerator();
+var salonlightdoor = device('Salonlightdoor');
+var bedlightdesk = device('Bedlightdesk');
+var salonlightcorner = device('Salonlightcorner');
 
-var HomeScreen = React.createClass({
-  openHouse: function(){
-    scripts.execute('openhouse', '1')
-  },
-  closeHouse: function(){
-    scripts.execute('closehouse', '1')
-  },
-  openLight: function(){
-    store.execute_feature('WeMo Insight', 'light', '1', 'on')
-    store.execute_feature('WeMo Switch', 'light', '1', 'on')
-  },
-  closeLight: function(){
-    store.execute_feature('WeMo Insight', 'light', '1', 'off')
-    store.execute_feature('WeMo Switch', 'light', '1', 'off')
-  },
-  render: function() {
-    return (
-      <div className="homeScreen" >
-        <button type="button" className="big-bt btn btn-default inline " onClick={this.openHouse}>Open house</button>
-        <button type="button" className="btn btn-default inline big-bt" onClick={this.closeHouse}>Close house</button>
-        <button type="button" className="btn btn-default inline big-bt" onClick={this.openLight}>Open lights</button>
-        <button type="button" className="btn btn-default inline big-bt" onClick={this.closeLight}>Close lights</button>
-      </div>
-    );
-  }
-});
-
-var DeviceBar = React.createClass({
-  onAddDevice: function(){
-    this.props.onAddDevice();
-  },
-  render: function() {
-    return (
-      <div className="deviceBar bar" >
-        <h3 className="inline">Devices</h3>
-        <button type="button" className="btn btn-default inline glyphicon glyphicon-plus" onClick={this.onAddDevice}/>
-      </div>
-    );
-  }
-});
-
-var Device = React.createClass({
-  getInitialState: function() {
-    var device = this.props.device;
-    if(!device){
-      device = {
-          name: "",
-          mac: "",
-          ip: "",
-          desc: "",
-        };
-      }
-    return {device: device};
-  },
-  handleChange: function(event) {
-    var device = {
-      name: React.findDOMNode(this.refs.name).value.trim(),
-      mac: React.findDOMNode(this.refs.mac).value.trim(),
-      ip: React.findDOMNode(this.refs.ip).value.trim(),
-      desc: React.findDOMNode(this.refs.desc).value.trim(),
-    };
-    this.setState({device: device});
-  },
-  onCancel: function(){
-    this.props.setDeviceList();
-  },
-  onClickDevice: function(){
-    if(this.props.mode == 1){ //Add device
-      device = {
-        name: React.findDOMNode(this.refs.name).value.trim(),
-        mac: React.findDOMNode(this.refs.mac).value.trim(),
-        ip: React.findDOMNode(this.refs.ip).value.trim(),
-        desc: React.findDOMNode(this.refs.desc).value.trim(),
-      };
-      store.addDevice(device);
-    } else {//Update device
-      device = {
-        name: React.findDOMNode(this.refs.name).value.trim(),
-        mac: React.findDOMNode(this.refs.mac).value.trim(),
-        ip: React.findDOMNode(this.refs.ip).value.trim(),
-        desc: React.findDOMNode(this.refs.desc).value.trim(),
-      };
-      store.updateDevice(this.props.name, device);
-    }
-    this.props.setDeviceList();
-  },
-  render: function() {
-    var btLabel = "Add";
-    if(this.props.mode == 2)
-      btLabel = "Update";
-    var device = this.state.device;
-    return (
-      <div className="device">
-        <div><div className="device-label inline">Name</div> <input className="inline" type="text" ref="name" value={device.name} onChange={this.handleChange}/></div>
-        <div><div className="device-label inline">MAC</div>  <input className="inline" type="text" ref="mac" value={device.mac} onChange={this.handleChange}/></div>
-        <div><div className="device-label inline">ip</div>  <input className="inline" type="text" ref="ip" value={device.ip} onChange={this.handleChange}/></div>
-        <div><div className="device-label inline">Description</div>  <input className="inline" type="text" ref="desc" value={device.desc} onChange={this.handleChange}/></div>
-        <button type="button" className="btn btn-default" onClick={this.onClickDevice}>{btLabel}</button>
-        <button type="button" className="btn btn-default" onClick={this.onCancel}>Cancel</button>
-      </div>
-    );
-  }
-});
-
-var DeviceSummary = React.createClass({
-  onEdit: function(device){
-    this.props.setUpdateDevice(device);
-  },
-  onDelete: function(device){
-    this.props.deleteDevice(device);
-  },
-  render: function() {
-    return (
-      <div className="deviceSummary">
-        <div className="deviceName inline">
-          {this.props.name}
-        </div>
-        <button type="button" className="btn btn-default inline" onClick={this.onEdit}>Edit</button>
-        <button type="button" className="btn btn-default inline" onClick={this.onDelete}>Delete</button>
-      </div>
-    );
-  }
-});
-
-var DeviceList = React.createClass({
-  setUpdateDevice: function(device){
-    this.props.setUpdateDevice(device);
-  },
-  deleteDevice: function(device){
-    store.deleteDevice(device);
-  },
-  render: function() {
-    var deviceNodes = this.props.devices.map(function (device) {
-      return (
-        <DeviceSummary key={device.name} name={device.name} deleteDevice={this.deleteDevice.bind(this, device)} setUpdateDevice={this.setUpdateDevice.bind(this, device)}/>
-      );
-    },this);
-    return (
-      <div className="deviceList">
-        {deviceNodes}
-      </div>
-    );
-  }
-});
-
-var DeviceBox = React.createClass({
-  getInitialState: function() {
-    return {current: 0, devices:store.getDevices()};
-   },
-   updateDevice: function(){
-     var state = this.state;
-     state.devices = store.getDevices();
-     this.setState(state);
-   },
-   componentDidMount: function() {
-     store.addListener(this.updateDevice);
-   },
-   setDeviceList: function() {
-     var state = this.state;
-     state.current = 0;
-     this.setState(state);
-   },
-   setAddDevice: function() {
-     var state = this.state;
-     state.current = 1;
-     this.setState(state);
-   },
-   setUpdateDevice: function(device) {
-     var state = this.state;
-     state.current = 2;
-     state.device = device;
-     this.setState(state);
-   },
-
-  render: function() {
-    var test = <DeviceList devices={this.state.devices} setUpdateDevice={this.setUpdateDevice}/>
-    if (this.state.current == 1)
-     test = <Device mode="1" setDeviceList={this.setDeviceList}/>
-    else if (this.state.current == 2)
-      test = <Device mode="2" name={this.state.device.name} setDeviceList={this.setDeviceList} device={this.state.device}/>
-
-      return (
-        <div className="deviceBox">
-          <DeviceBar onAddDevice={this.setAddDevice}/>
-          {test}
-        </div>
-      );
-    }
-});
-
- var TVControl = React.createClass({
+var TVControl = React.createClass({
          wakeup: function() {
                  scripts.execute('openhouse', '1');
          },
@@ -209,32 +22,58 @@ var DeviceBox = React.createClass({
          }
   });
 
-  var LightControl = React.createClass({
-          frontdoor: function() {
-                  eventGenerator.sendEvent('salon_entry_bt');
-          },
-          frontdoorReset: function() {
-                  eventGenerator.sendEvent('salon_entry_reset_bt');
-          },
-          saloncorner: function() {
-                  eventGenerator.sendEvent('salon_corner_bt');
-          },
-          beddesk: function() {
-                  eventGenerator.sendEvent('bedroom_desk_bt');
-          },
-          render: function() {
-                  return (
-                          <div className="lightControl content">
-                                  <a className="content-item" onClick={this.frontdoor} href="#frontdoor">Front door</a>
-                                  <a className="content-item" onClick={this.frontdoorReset} href="#frontdoorReset">Front door reset</a>
-                                  <a className="content-item" onClick={this.saloncorner} href="#saloncorner">Salon corner</a>
-                                  <a className="content-item" onClick={this.beddesk} href="#saloncorner">Bedroom desk</a>
-                          </div>
-                  );
-          }
+var LightControl = React.createClass({
+        loadCommentsFromServer: function() {
+                salonlightdoor.light.state({}, this.updateLightState, this.updateError);
+                bedlightdesk.light.state({}, this.updateLightState, this.updateError);
+                salonlightcorner.light.state({}, this.updateLightState, this.updateError);
+        },
+        updateLightState: function(data){
+                var state = this.state;
+                if(data.device.name == 'Salonlightdoor')
+                        state.salon_entry = data.state;
+                else if(data.device.name == 'Salonlightcorner')
+                        state.salon_corner = data.state;
+                else if(data.device.name == 'Bedlightdesk')
+                        state.bedroom_desk = data.state;
+
+                this.setState(state);
+        },
+        updateError: function(data){
+                console.log("Error:" + data);
+        },
+        getInitialState: function() {
+                return {salon_entry: false, salon_corner: false, bedroom_desk: false};
+        },
+        componentDidMount: function() {
+                this.loadCommentsFromServer();
+                setInterval(this.loadCommentsFromServer, 500);
+        },
+        frontdoor: function() {
+                eventGenerator.sendEvent('salon_entry_bt');
+        },
+        frontdoorReset: function() {
+                eventGenerator.sendEvent('salon_entry_reset_bt');
+        },
+        saloncorner: function() {
+                eventGenerator.sendEvent('salon_corner_bt');
+        },
+        beddesk: function() {
+                eventGenerator.sendEvent('bedroom_desk_bt');
+        },
+        render: function() {
+          return (
+                  <div className="lightControl content">
+                          <a className="content-item" onClick={this.frontdoor} href="#frontdoor">Front door {this.state.salon_entry}</a>
+                          <a className="content-item" onClick={this.frontdoorReset} href="#frontdoorReset">Front door reset</a>
+                          <a className="content-item" onClick={this.saloncorner} href="#saloncorner">Salon corner{this.state.salon_corner}</a>
+                          <a className="content-item" onClick={this.beddesk} href="#bedroomdesk">Bedroom desk{this.state.bedroom_desk}</a>
+                  </div>
+          );
+        }
    });
 
- var App = React.createClass({
+var App = React.createClass({
          getInitialState: function() {
                  return {current: <TVControl />,idx:1,side:false,touch_start: null,touch_end: null};
          },

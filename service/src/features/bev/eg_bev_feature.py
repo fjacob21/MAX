@@ -17,9 +17,13 @@ class eg_bev_feature(object):
     def description(self):
         return "Control Bell ExpressVu using evenghost receiver"
 
+    @property
+    def functions(self):
+        return ['enter']
+
     def execute(self, cmd, params):
         if cmd == 'enter':
             return self.enter(params)
 
     def enter(self, params):
-        return {'result': Send('EnterBEV', self._device.ip)}
+        return {'device':self._device.json, 'feature':self.name, 'result': Send('EnterBEV', self._device.ip)}

@@ -19,6 +19,10 @@ class wol_feature(object):
     def description(self):
         return "Wake On Lan feature"
 
+    @property
+    def functions(self):
+        return ['wake']
+
     def execute(self, cmd, params):
         if cmd == 'wake':
             return self.wake(params)

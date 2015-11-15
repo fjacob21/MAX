@@ -9,10 +9,10 @@ import MAX
 store = MAX.devices
 scripts = MAX.scripts
 
-app = Flask(__name__, static_url_path='')
+application = Flask(__name__, static_url_path='')
 
 # Devices Section ====================================================
-@app.route('/MAX/api/v1.0/devices/', methods=['GET'])
+@application.route('/MAX/api/v1.0/devices/', methods=['GET'])
 def get_devices():
     devices = []
     for key, value in store.devices.iteritems():
@@ -21,13 +21,13 @@ def get_devices():
     #wemo._env.discover(10)
     return jsonify({"devices": devices})
 
-@app.route('/MAX/api/v1.0/devices/<string:device>/', methods=['GET'])
+@application.route('/MAX/api/v1.0/devices/<string:device>/', methods=['GET'])
 def get_device(device):
     if device not in store.devices:
         abort(404)
     return jsonify({"device": store.devices[device].json})
 
-@app.route('/MAX/api/v1.0/devices/', methods=['POST'])
+@application.route('/MAX/api/v1.0/devices/', methods=['POST'])
 def add_device():
     device = request.get_json()
     print('received:', device)
@@ -38,7 +38,7 @@ def add_device():
         return abort(400)
     return get_devices()
 
-@app.route('/MAX/api/v1.0/devices/<string:device>/', methods=['PUT'])
+@application.route('/MAX/api/v1.0/devices/<string:device>/', methods=['PUT'])
 def update_device(device):
     if device not in store.devices:
         abort(404)
@@ -51,7 +51,7 @@ def update_device(device):
     store.update_device(device, device_json)
     return get_devices()
 
-@app.route('/MAX/api/v1.0/devices/<string:device>/', methods=['DELETE'])
+@application.route('/MAX/api/v1.0/devices/<string:device>/', methods=['DELETE'])
 def delete_device(device):
     if device not in store.devices:
         abort(404)
@@ -61,7 +61,7 @@ def delete_device(device):
 
     return get_devices()
 
-@app.route('/MAX/api/v1.0/devices/<string:device>/<string:cmd>/', methods=['POST'])
+@application.route('/MAX/api/v1.0/devices/<string:device>/<string:cmd>/', methods=['POST'])
 def execute_cmd(device, cmd):
     if device not in store.devices:
         abort(404)
@@ -71,7 +71,7 @@ def execute_cmd(device, cmd):
     #Execute cmd
     return jsonify(store.devices[device].execute(cmd, param_json))
 
-@app.route('/MAX/api/v1.0/devices/<string:device>/<string:feature>/<int:version>/<string:cmd>/', methods=['POST'])
+@application.route('/MAX/api/v1.0/devices/<string:device>/<string:feature>/<int:version>/<string:cmd>/', methods=['POST'])
 def execute_feature_cmd(device, feature, version, cmd):
     if device not in store.devices:
         abort(404)
@@ -82,7 +82,7 @@ def execute_feature_cmd(device, feature, version, cmd):
     return jsonify(store.devices[device].execute_feature(feature, version, cmd, param_json))
 
 # Scripts Section ====================================================
-@app.route('/MAX/api/v1.0/scripts/', methods=['GET'])
+@application.route('/MAX/api/v1.0/scripts/', methods=['GET'])
 def get_scripts():
     scripts_json = []
     for key, value in scripts.scripts.iteritems():
@@ -90,7 +90,7 @@ def get_scripts():
 
     return jsonify({"scripts": scripts_json})
 
-@app.route('/MAX/api/v1.0/scripts/<string:script>/<int:version>/', methods=['POST'])
+@application.route('/MAX/api/v1.0/scripts/<string:script>/<int:version>/', methods=['POST'])
 def execute_script(script, version):
     #if script not in scripts.scripts:
     #    abort(404)
@@ -101,7 +101,7 @@ def execute_script(script, version):
     return jsonify(scripts.execute_script(script, version, param_json))
 
 # Event Section ====================================================
-@app.route('/MAX/api/v1.0/event/', methods=['POST'])
+@application.route('/MAX/api/v1.0/event/', methods=['POST'])
 def trigger_event():
     print('Trigger event!!!!')
     param_json = request.get_json()
@@ -117,22 +117,22 @@ def trigger_event():
     return jsonify({"result": True})
 
 # Static WEB section ============================================
-@app.route('/html/<path:path>')
+@application.route('/html/<path:path>')
 def send_js(path):
     return send_from_directory('../../frontend/web-reactjs', path)
 
-@app.route('/')
+@application.route('/')
 def root():
     #wemo.connect()
     return redirect('/html/index.html')
 
-def run():
-    print('Run Flask in Thread')
-    app.run(debug=False,host='0.0.0.0', port=5000, threaded=True)
+#def run():
+#    print('Run Flask in Thread')
+#    app.run()#debug=False,host='0.0.0.0', port=5000, threaded=True)
 
 def start():
     from gevent.wsgi import WSGIServer
-    http_server = WSGIServer(('', 5000), app)
+    http_server = WSGIServer(('', 5000), application)
     print('WebService ON')
     http_server.serve_forever()
     #gevent.spawn(run)

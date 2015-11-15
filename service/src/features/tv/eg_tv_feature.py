@@ -17,14 +17,26 @@ class eg_tv_feature(object):
     def description(self):
         return "Control TV using evenghost receiver"
 
+    @property
+    def functions(self):
+        return ['open', 'close', 'state']
+
     def execute(self, cmd, params):
         if cmd == 'open':
             return self.open(params)
         if cmd == 'close':
             return self.close(params)
+        if cmd == 'state':
+            return self.state(params)
 
     def open(self, params):
-        return {'result': Send('OpenTV', self._device.ip)}
+        return {'device':self._device.json, 'feature':self.name, 'result': Send('OpenTV', self._device.ip)}
 
     def close(self, params):
-        return {'result': Send('CloseTV', self._device.ip)}
+        return {'device':self._device.json, 'feature':self.name, 'result': Send('CloseTV', self._device.ip)}
+
+    def state(self, params):
+        if self._device.is_online()['isonline'] == False:
+            return {'device':self._device.json, 'feature':self.name, 'result': True, 'state': 0}
+        result = Send('GetState', self._device.ip)
+        return {'device':self._device.json, 'feature':self.name, 'result': Send('GetState', self._device.ip)}

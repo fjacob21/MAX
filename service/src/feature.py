@@ -21,3 +21,12 @@ class feature(object):
     @property
     def feature_class(self):
         return self._feature_class
+
+    @property
+    def json(self):
+        print('json', self)
+        obj = {}
+        obj['name'] = self._name
+        obj['version'] = self._version
+        obj['description'] = self._desc
+        return obj

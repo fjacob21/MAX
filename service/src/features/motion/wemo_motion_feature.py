@@ -21,12 +21,16 @@ class wemo_motion_feature(object):
     def description(self):
         return "Wemo motion sensor feature"
 
+    @property
+    def functions(self):
+        return ['state']
+
     def execute(self, cmd, params):
         if cmd == 'state':
             return self.state(params)
 
     def state(self, params):
-        return {'result': True, 'state': self._wemo_device.get_state()}
+        return {'device':self._device.json, 'feature':self.name, 'result': True, 'state': self._wemo_device.get_state()}
 
     def motion(self, state):
         #if self._current_state != state:

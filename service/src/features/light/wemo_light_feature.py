@@ -18,16 +18,25 @@ class wemo_light_feature(object):
     def description(self):
         return "Wemo Light control feature"
 
+    @property
+    def functions(self):
+        return ['on', 'off', 'state']
+
     def execute(self, cmd, params):
         if cmd == 'on':
             return self.on(params)
         elif cmd == 'off':
             return self.off(params)
+        elif cmd == 'state':
+            return self.get_state(params)
+
+    def get_state(self, params):
+        return {'device':self._device.json, 'feature':self.name, 'result': True, 'state':self._wemo_device.get_state()}
 
     def on(self, params):
         self._wemo_device.on()
-        return {'result': True}
+        return {'device':self._device.json, 'feature':self.name, 'result': True}
 
     def off(self, params):
         self._wemo_device.off()
-        return {'result': True}
+        return {'device':self._device.json, 'feature':self.name, 'result': True}
