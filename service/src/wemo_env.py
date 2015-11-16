@@ -30,9 +30,12 @@ class wemo_env(object):
             self.start_watching()
 
     def update_state(self, sender, **kwargs):
+        state = kwargs.get('state')
+        if state != 0:
+            state = 1
         if sender.name in self._watcheux:
             for watcheu in self._watcheux[sender.name]:
-                watcheu(kwargs.get('state'))
+                watcheu(state)
 
         #print "{} state is {state}".format(
         #    sender.name, state="on" if kwargs.get('state') else "off")

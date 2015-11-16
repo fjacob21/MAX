@@ -25,18 +25,18 @@ class salon_entry_light_state(object):
     def isMorning(self):
         now = datetime.datetime.now().time()
         isMorning = (datetime.time(6) <= now <= datetime.time(7))
-        print("Is it morning? {0}".format(isMorning))
+        #print("Is it morning? {0}".format(isMorning))
         return isMorning
 
     def isEvening(self):
         now = datetime.datetime.now().time()
         isEvening = (datetime.time(17) <= now <= datetime.time(21, 30))
-        print("Is it evening? {0}".format(isEvening))
+        #print("Is it evening? {0}".format(isEvening))
         return isEvening
 
     def isLightNeeded(self):
         isLightNeeded = self.isMorning() or self.isEvening()
-        print("Is light needed? {0}".format(isLightNeeded))
+        #print("Is light needed? {0}".format(isLightNeeded))
         return isLightNeeded
 
     def set_state(self, state):

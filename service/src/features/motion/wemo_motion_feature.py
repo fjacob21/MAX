@@ -7,7 +7,7 @@ class wemo_motion_feature(object):
         self._device = device
         self._wemo_device = wemo.get_device(self._device.ip)
         self._current_state = self._wemo_device.get_state()
-        wemo.register(self._device.name, self.motion)
+        wemo.register(self._device.ip, self.motion)
 
     @property
     def name(self):

@@ -5,6 +5,42 @@ var salonlightdoor = device('Salonlightdoor');
 var bedlightdesk = device('Bedlightdesk');
 var salonlightcorner = device('Salonlightcorner');
 
+var LightUnitControl = React.createClass({
+        loadLightState: function() {
+                this.props.device.light.state({}, this.updateLightState, this.updateError);
+        },
+        updateLightState: function(data){
+                var state = this.state;
+                state.state = data.state;
+                this.setState(state);
+        },
+        updateError: function(data){
+                console.log("Error:" + data);
+        },
+        onClick: function() {
+                eventGenerator.sendEvent(this.props.event);
+        },
+        getInitialState: function() {
+                return {state: false};
+        },
+        componentDidMount: function() {
+                this.loadLightState();
+                setInterval(this.loadLightState, 500);
+        },
+         render: function() {
+                 var state = 'ON';
+                 if(this.state.state == false)
+                        state = 'OFF';
+                 return (
+                         <div className="lightUnitControl content-item" onClick={this.onClick}>
+                                 <div className="lightUnitControlItem glyphicon glyphicon-lamp"></div>
+                                 <a className="lightUnitControlItem" href="#frontdoor">{this.props.description}</a>
+                                 <div className="lightUnitControlItem">{state}</div>
+                         </div>
+                 );
+         }
+  });
+
 var TVControl = React.createClass({
          wakeup: function() {
                  scripts.execute('openhouse', '1');
@@ -23,51 +59,16 @@ var TVControl = React.createClass({
   });
 
 var LightControl = React.createClass({
-        loadCommentsFromServer: function() {
-                salonlightdoor.light.state({}, this.updateLightState, this.updateError);
-                bedlightdesk.light.state({}, this.updateLightState, this.updateError);
-                salonlightcorner.light.state({}, this.updateLightState, this.updateError);
-        },
-        updateLightState: function(data){
-                var state = this.state;
-                if(data.device.name == 'Salonlightdoor')
-                        state.salon_entry = data.state;
-                else if(data.device.name == 'Salonlightcorner')
-                        state.salon_corner = data.state;
-                else if(data.device.name == 'Bedlightdesk')
-                        state.bedroom_desk = data.state;
-
-                this.setState(state);
-        },
-        updateError: function(data){
-                console.log("Error:" + data);
-        },
-        getInitialState: function() {
-                return {salon_entry: false, salon_corner: false, bedroom_desk: false};
-        },
-        componentDidMount: function() {
-                this.loadCommentsFromServer();
-                setInterval(this.loadCommentsFromServer, 500);
-        },
-        frontdoor: function() {
-                eventGenerator.sendEvent('salon_entry_bt');
-        },
         frontdoorReset: function() {
                 eventGenerator.sendEvent('salon_entry_reset_bt');
-        },
-        saloncorner: function() {
-                eventGenerator.sendEvent('salon_corner_bt');
-        },
-        beddesk: function() {
-                eventGenerator.sendEvent('bedroom_desk_bt');
         },
         render: function() {
           return (
                   <div className="lightControl content">
-                          <a className="content-item" onClick={this.frontdoor} href="#frontdoor">Front door {this.state.salon_entry}</a>
+                          <LightUnitControl description="Front Door" event='salon_entry_bt' device={salonlightdoor}/>
                           <a className="content-item" onClick={this.frontdoorReset} href="#frontdoorReset">Front door reset</a>
-                          <a className="content-item" onClick={this.saloncorner} href="#saloncorner">Salon corner{this.state.salon_corner}</a>
-                          <a className="content-item" onClick={this.beddesk} href="#bedroomdesk">Bedroom desk{this.state.bedroom_desk}</a>
+                          <LightUnitControl description="Salon corner" event='salon_corner_bt' device={salonlightcorner}/>
+                          <LightUnitControl description="Bedroom desk" event='bedroom_desk_bt' device={bedlightdesk}/>
                   </div>
           );
         }
@@ -122,7 +123,7 @@ var App = React.createClass({
                  return (
                          <div className="app" onTouchMove={this.onTouchMove} onTouchEnd={this.touchend} onTouchStart={this.onTouchStart}>
                                  <div className="menu-bar">
-                                         <a className='side-menu-bt glyphicon glyphicon-asterisk' onClick={this.setSideMenu} href="#"></a>
+                                         <a className='glyphicon glyphicon-menu-hamburger side-menu-bt' onClick={this.setSideMenu} href="#"></a>
                                  </div>
                                  {t}
                                  <div className={side} onClick={this.setSideMenu}>

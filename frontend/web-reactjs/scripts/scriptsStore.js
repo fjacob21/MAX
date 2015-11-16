@@ -25,9 +25,10 @@ function scriptsStore(){
         data: JSON.stringify({}),
         success: function(data) {
           //this.devices = data.devices;
+          alert('Script executed!');
         }.bind(this),
         error: function(xhr, status, err) {
-          console.error("Error on execute ", status, err.toString());
+          alert("Error on execute ", status, err.toString());
         }.bind(this)
       });
     },

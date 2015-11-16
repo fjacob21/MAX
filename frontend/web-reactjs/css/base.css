@@ -48,6 +48,36 @@ ul {
   padding-left: 30px;
 }
 
+@font-face {
+  font-family: 'Glyphicons Halflings';
+
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicon-asterisk:before {
+  content: "\2a";
+}
+.glyphicon-menu-hamburger:before {
+  content: "\e236";
+}
+.glyphicon-lamp:before {
+  content: "\e223";
+}
+.glyphicon-record:before {
+  content: "\e165";
+}
 .content {
         background: #f4f7ff;
         height:100vh;
@@ -76,7 +106,7 @@ ul {
 }
 
 .side-menu {
-        padding: 70px 30px;
+        padding: 70px 0 0 10px;
         box-shadow: none;
         background: #34495E;
         z-index: 83;
@@ -110,8 +140,7 @@ ul {
         border: 1px solid #DDD;
         text-decoration: none;
 }
-
-@font-face {
+/*@font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
@@ -131,8 +160,8 @@ ul {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.glyphicon-asterisk:before               {  content: "\e137"; }
+.glyphicon-menu-hamburger:before         {  content: "\e236"; }
+.glyphicon-asterisk:before               {  content: "\2a"; }*/
 
 .content-item:hover {
         background-color: #f8f8f8;
@@ -150,6 +179,7 @@ ul {
 }
 
 .menu-item{
+        padding: 0 0 0 10px;
         display: block;
         height: 50px;
         line-height: 50px;
@@ -166,7 +196,18 @@ ul {
 .menu-item.active{
         background: #fff;
         border: 1px solid #DDD;
-        border-top: 2px solid #3498db;
+        /*border-top: 2px solid #3498db;*/
         border-bottom: 0;
         color: #333;
+}
+
+.lightUnitControlItem{
+        display: table-cell;
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 0;
+        color: #787474;
+        cursor: pointer;
+        text-decoration: none;
+        padding-right: 10px
 }

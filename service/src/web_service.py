@@ -132,7 +132,7 @@ def root():
 
 def start():
     from gevent.wsgi import WSGIServer
-    http_server = WSGIServer(('', 5000), application)
+    http_server = WSGIServer(('', 5000), application, log=None)
     print('WebService ON')
     http_server.serve_forever()
     #gevent.spawn(run)

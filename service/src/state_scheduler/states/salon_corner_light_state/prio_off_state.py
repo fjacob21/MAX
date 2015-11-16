@@ -7,6 +7,10 @@ class prio_off_state(object):
         self._lasttime = time.time()
 
     def event(self, event, source, params):
+        if source.name == 'Salonlightcorner':
+            if event == 'light_on':
+                print('light_on')
+                self._machine.set_state(self._machine._prio_on_state)
         if event == 'salon_corner_bt':
             self._machine.set_state(self._machine._prio_on_state)
 
