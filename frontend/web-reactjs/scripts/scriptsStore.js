@@ -24,7 +24,6 @@ function scriptsStore(){
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify({}),
         success: function(data) {
-          //this.devices = data.devices;
           alert('Script executed!');
         }.bind(this),
         error: function(xhr, status, err) {

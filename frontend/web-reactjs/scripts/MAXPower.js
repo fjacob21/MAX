@@ -89,26 +89,26 @@ var App = React.createClass({
          },
          onTouchStart: function(e){
                  var state = this.state;
-                 state.touch_start=e.touches[0]
+                 state.touch_start=e.touches[0].screenX;
                  this.setState(state);
          },
          onTouchMove: function(e){
                  var state = this.state;
-                 state.touch_end=e.touches[0]
+                 state.touch_end=e.touches[0].screenX;
                  this.setState(state);
          },
          touchend: function(e){
+                var state = this.state;
                 if(this.state.touch_start != null && this.state.touch_end != null) {
-                        var state = this.state;
-                        dx = this.state.touch_end.screenX - this.state.touch_start.screenX
+                        dx = this.state.touch_end - this.state.touch_start;
                         if(dx < -50)
                                 state.side = true
                         if(dx > 50)
                                 state.side = false
-                        state.touch_start = null;
-                        state.touch_end = null;
-                        this.setState(state);
                 }
+                state.touch_start = null;
+                state.touch_end = null;
+                this.setState(state);
          },
          setSideMenu: function(){
            var state = this.state;
