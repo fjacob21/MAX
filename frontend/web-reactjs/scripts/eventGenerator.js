@@ -1,12 +1,9 @@
 function eventGenerator(){
-    newobj = {
-
+    var newobj = {
     scripts:[],
-
     ctr: function(){
 
     },
-
     sendEvent: function(eventName, params){
       $.ajax({
         url: "/MAX/api/v1.0/event/",

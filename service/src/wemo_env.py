@@ -12,7 +12,7 @@ class wemo_env(object):
             self._env.start()
             self._env.discover(3)
         except:
-            print "WeMo environment cannot start ;( !!!!"
+            print("WeMo environment cannot start ;( !!!!")
 
     def start_watching(self):
         statechange.connect(self.update_state,

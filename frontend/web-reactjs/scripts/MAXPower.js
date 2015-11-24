@@ -1,9 +1,9 @@
-var store = devicesStore();
-var scripts = scriptsStore();
-var eventGenerator = eventGenerator();
-var salonlightdoor = device('Salonlightdoor');
-var bedlightdesk = device('Bedlightdesk');
-var salonlightcorner = device('Salonlightcorner');
+var store = new devicesStore();
+var scripts = new scriptsStore();
+var events = new eventGenerator();
+var salonlightdoor = new device('Salonlightdoor');
+var bedlightdesk = new device('Bedlightdesk');
+var salonlightcorner = new device('Salonlightcorner');
 
 var LightUnitControl = React.createClass({
         loadLightState: function() {
@@ -18,7 +18,7 @@ var LightUnitControl = React.createClass({
                 console.log("Error:" + data);
         },
         onClick: function() {
-                eventGenerator.sendEvent(this.props.event);
+                events.sendEvent(this.props.event);
         },
         getInitialState: function() {
                 return {state: false};
@@ -60,7 +60,12 @@ var TVControl = React.createClass({
 
 var LightControl = React.createClass({
         frontdoorReset: function() {
-                eventGenerator.sendEvent('salon_entry_reset_bt');
+                events.sendEvent('salon_entry_reset_bt');
+        },
+        all: function() {
+                events.sendEvent('salon_entry_bt');
+                events.sendEvent('salon_corner_bt');
+                events.sendEvent('bedroom_desk_bt');
         },
         render: function() {
           return (
@@ -69,6 +74,7 @@ var LightControl = React.createClass({
                           <a className="content-item" onClick={this.frontdoorReset} href="#frontdoorReset">Front door reset</a>
                           <LightUnitControl description="Salon corner" event='salon_corner_bt' device={salonlightcorner}/>
                           <LightUnitControl description="Bedroom desk" event='bedroom_desk_bt' device={bedlightdesk}/>
+                          <a className="content-item" onClick={this.all} href="#all">All</a>
                   </div>
           );
         }
@@ -135,7 +141,7 @@ var App = React.createClass({
          }
   });
 
-React.render(
+ReactDOM.render(
   <App />,
   document.getElementById('content')
 );

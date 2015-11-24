@@ -4,7 +4,6 @@ import thread
 import gevent
 from device import device
 import MAX
-#from wemo_env import wemo
 
 store = MAX.devices
 scripts = MAX.scripts
@@ -18,7 +17,6 @@ def get_devices():
     for key, value in store.devices.iteritems():
         devices.append(value.json)
 
-    #wemo._env.discover(10)
     return jsonify({"devices": devices})
 
 @application.route('/MAX/api/v1.0/devices/<string:device>/', methods=['GET'])
@@ -103,7 +101,6 @@ def execute_script(script, version):
 # Event Section ====================================================
 @application.route('/MAX/api/v1.0/event/', methods=['POST'])
 def trigger_event():
-    print('Trigger event!!!!')
     param_json = request.get_json()
     #Send event to scheduler
     if 'event' not in param_json:
@@ -123,7 +120,6 @@ def send_js(path):
 
 @application.route('/')
 def root():
-    #wemo.connect()
     return redirect('/html/index.html')
 
 #def run():
