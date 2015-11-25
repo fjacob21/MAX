@@ -106,7 +106,7 @@ var App = React.createClass({
          touchend: function(e){
                 var state = this.state;
                 if(this.state.touch_start != null && this.state.touch_end != null) {
-                        dx = this.state.touch_end - this.state.touch_start;
+                        var dx = this.state.touch_end - this.state.touch_start;
                         if(dx < -50)
                                 state.side = true
                         if(dx > 50)
